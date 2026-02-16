@@ -46,7 +46,32 @@ if "results" in st.session_state:
             st.markdown(res["summary"])
             
             if res.get("audit_id"):
-                st.caption(f"Audit Log ID: {res['audit_id']}")
+                audit_id = res["audit_id"]
+                st.caption(f"Audit Log ID: {audit_id}")
+                
+                # Feedback Section
+                st.divider()
+                st.write("### Rate this Summary")
+                
+                col_up, col_down = st.columns(2)
+                
+                with col_up:
+                    if st.button("👍 Good", key=f"up_{audit_id}"):
+                        from db.feedback import submit_feedback
+                        if submit_feedback(audit_id, 1, "Good"):
+                            st.success("Thanks for your feedback!")
+
+                with col_down:
+                    if st.button("👎 Incorrect", key=f"down_{audit_id}"):
+                        st.session_state[f"show_reason_{audit_id}"] = True
+                
+                if st.session_state.get(f"show_reason_{audit_id}"):
+                    reason = st.text_area("What was wrong?", key=f"reason_{audit_id}")
+                    if st.button("Submit Feedback", key=f"submit_{audit_id}"):
+                        from db.feedback import submit_feedback
+                        if submit_feedback(audit_id, 0, reason):
+                            st.success("Feedback recorded. We will improve!")
+                            st.session_state[f"show_reason_{audit_id}"] = False
 
         with col2:
             st.subheader("Evidence Panel")
