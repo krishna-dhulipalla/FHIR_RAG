@@ -8,7 +8,7 @@ from pathlib import Path
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-FHIR_SERVER_URL = os.getenv("FHIR_SERVER_URL", "http://localhost:8080/fhir")
+FHIR_SERVER_URL = os.getenv("FHIR_SERVER_URL") or os.getenv("FHIR_BASE_URL", "http://localhost:8080/fhir")
 
 def load_bundle(file_path: Path):
     """

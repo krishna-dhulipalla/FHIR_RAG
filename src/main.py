@@ -14,6 +14,10 @@ from redaction.engine import Redactor
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+def get_fhir_base_url() -> str:
+    """Returns configured FHIR base URL with a safe local default."""
+    return os.getenv("FHIR_BASE_URL", "http://localhost:8080/fhir")
+
 def run_pipeline(patient_id: str, api_key: str = None):
     """
     Runs the full summarization pipeline for a given patient_id.
@@ -22,7 +26,7 @@ def run_pipeline(patient_id: str, api_key: str = None):
     if not api_key:
         api_key = os.getenv("OPENAI_API_KEY")
         
-    client = FHIRClient(base_url="http://localhost:8080/fhir")
+    client = FHIRClient(base_url=get_fhir_base_url())
     
     # 1. Fetch Patient Details
     patient = client.get_patient(patient_id)
@@ -103,7 +107,7 @@ def main():
         logger.warning("OPENAI_API_KEY is not set. LLM generation may fail.")
 
     # Find a valid patient
-    client = FHIRClient(base_url="http://localhost:8080/fhir")
+    client = FHIRClient(base_url=get_fhir_base_url())
     patients_bundle = client._get("Patient", params={"_count": 1})
     entries = patients_bundle.get("entry", [])
     if not entries:
