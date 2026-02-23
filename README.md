@@ -5,7 +5,7 @@
 The **Pre-Rounding Assistant** helps clinicians quickly review patient data by generating concise, accurate summaries from FHIR records. Unlike generic chatbots, this system is **grounded**: every claim in the summary is cited with a link back to the original clinical fact (Lab, Vital, Medication). **This means: zero hallucination, full audit trail, and trust in clinical accuracy.**
 
 ![Status](https://img.shields.io/badge/Status-Prototype-blue)
-![Tech](https://img.shields.io/badge/Built%20With-Python%20|%20Streamlit%20|%20FHIR%20|%20OpenAI-green)
+![Tech](https://img.shields.io/badge/Built%20With-Python%20|%20Streamlit%20|%20PostgreSQL%20|%20FHIR%20|%20OpenAI-green)
 
 ---
 
